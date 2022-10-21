@@ -1,0 +1,28 @@
+name: weixin
+on:
+  workflow_dispatch:
+  schedule: 
+    # 浠ｈ〃鍥介檯鏍囧噯鏃堕棿4鐐?鍒嗭紝鍖椾含鏃堕棿闇€瑕?8灏忔椂锛屼唬琛ㄥ寳浜椂闂翠腑鍗?2鐐硅繍琛?
+    - cron: '0 4 * * *'
+jobs:
+#灏嗗伐浣滄祦绋嬩腑杩愯鐨勬墍鏈変綔涓氱粍鍚堝湪涓€璧?
+  build:
+  #瀹氫箟鍚嶄负 build 鐨勪綔涓氥€?瀛愰敭灏嗗畾涔変綔涓氱殑灞炴€?
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.1
+      - name: Set timezone
+        run: |
+          cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      - name: install pip packages
+        run: |
+          python -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+      - name: weixin
+        run: |
+          python3 main.py
